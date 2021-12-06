@@ -22,7 +22,7 @@ pipeline{
               {
                 //sh 'docker build -t jishoy96/django .'
                 script {
-                  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}/${env.BUILD_ID}"
                  }
               }
           }
@@ -39,8 +39,8 @@ pipeline{
      stage('Pushing to ECR') {
      steps {  
          script {
-                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${registry}:$IMAGE_TAG"
-                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${registry}:$IMAGE_TAG/${env.BUILD_ID}"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}:${env.BUILD_ID}"
          }
      }
      }     
