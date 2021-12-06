@@ -5,6 +5,8 @@ pipeline{
         registryCredential = 'my.awsecr.id'
         AWS_DEFAULT_REGION = 'us-west-1'
         AWS_ACCOUNT_ID = '519852036875'
+        IMAGE_REPO_NAME =  'jishoy-ecr'
+        IMAGE_TAG = 'jishoy'
         dockerImage = ''
     }
     
@@ -20,7 +22,7 @@ pipeline{
               {
                 //sh 'docker build -t jishoy96/django .'
                 script {
-                  dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
                  }
               }
           }
@@ -34,15 +36,14 @@ pipeline{
             }
         }
   
-//        stage('Deploy image') {
-//         steps{
-//             script{
-//                 docker.withRegistry("https://" + registry, "ecr:eu-central-1:" + registryCredential) {
-//                     dockerImage.push()
-//                 }
-//             }
-//         }
-//     }
+     stage('Pushing to ECR') {
+     steps {  
+         script {
+                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${registry}:$IMAGE_TAG"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+         }
+     }
+     }     
   }
 }
 
