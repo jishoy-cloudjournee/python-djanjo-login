@@ -6,7 +6,7 @@ pipeline{
         AWS_DEFAULT_REGION = 'us-west-1'
         AWS_ACCOUNT_ID = '519852036875'
         IMAGE_REPO_NAME =  'jishoy-ecr'
-        IMAGE_TAG = 'jishoy'
+        IMAGE_TAG = '${env.BUILD_NUMBER}'
         dockerImage = ''
     }
     
@@ -22,7 +22,7 @@ pipeline{
               {
                 //sh 'docker build -t jishoy96/django .'
                 script {
-                  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}/${env.BUILD_ID}"
+                  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}
                  }
               }
           }
@@ -39,8 +39,8 @@ pipeline{
      stage('Pushing to ECR') {
      steps {  
          script {
-                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${registry}:$IMAGE_TAG/${env.BUILD_ID}"
-                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}:${env.BUILD_ID}"
+                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${registry}:$IMAGE_TAG"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
          }
      }
      }     
