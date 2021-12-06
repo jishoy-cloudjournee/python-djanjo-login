@@ -7,6 +7,12 @@ pipeline{
               sh 'ls'
             }
          }
-  }
+       stage('Build Docker') { 
+              steps
+              {
+                sh 'docker build -t jishoy96/django .'
+              }
+          }
+   }
 }
 
