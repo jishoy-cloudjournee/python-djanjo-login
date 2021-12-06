@@ -6,7 +6,7 @@ pipeline{
         AWS_DEFAULT_REGION = 'us-west-1'
         AWS_ACCOUNT_ID = '519852036875'
         IMAGE_REPO_NAME =  'jishoy-ecr'
-        IMAGE_TAG = 'jishoy/$BUILD_NUMBER'
+        IMAGE_TAG = 'jishoy: $BUILD_NUMBER'
         dockerImage = ''
     }
     
