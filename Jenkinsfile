@@ -1,5 +1,11 @@
 pipeline{
     agent any
+    environment {
+        registry = '519852036875.dkr.ecr.us-west-1.amazonaws.com/jishoy-ecr'
+        registryCredential = 'my.awsecr.id'
+        dockerImage = ''
+    }
+    
   stages{
          stage('Git clone') {
             steps {
@@ -10,21 +16,21 @@ pipeline{
        stage('Build Docker') { 
               steps
               {
-                sh 'docker build -t jishoy96/django .'
+                //sh 'docker build -t jishoy96/django .'
+                script {
+                  dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                 }
               }
           }
   
-      stage('Deploy'){
-        steps { 
-             script {
-              docker.withRegistry(
-                'https://519852036875.dkr.ecr.us-west-1.amazonaws.com',
-                'ecr:us-west-1:my.awsecr.id') {
-                 def myImage = docker.build('jishoy-ecr')
-                 myImage.push('latest')
+       stage('Deploy image') {
+        steps{
+            script{
+                docker.withRegistry("https://" + registry, "ecr:eu-central-1:" + registryCredential) {
+                    dockerImage.push()
                 }
-           }
-       }
+            }
+        }
      }
   }
 }
