@@ -25,7 +25,7 @@ pipeline{
            
        steps {
          withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/linux-x86-64"
+            sh "${scannerHome}/bin/"
         }   
          timeout(time: 10, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true
