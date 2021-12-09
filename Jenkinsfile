@@ -67,8 +67,8 @@ pipeline{
       stage ('K8S Deploy') {
       steps { 
               kubernetesDeploy(
-                configs: 'login.yaml'
-                kubeconfigId: 'mycluster'
+                configs: 'login.yaml',
+                kubeconfigId: 'mycluster',
                 enableConfigSubstitution: true
               )               
       }  
