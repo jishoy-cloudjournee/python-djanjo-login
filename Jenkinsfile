@@ -71,8 +71,8 @@ pipeline{
                 kubeconfigId: 'mycluster',
                 enableConfigSubstitution: true
               )               
-      }  
-      
+        }  
+      }     
   }
 }
 
