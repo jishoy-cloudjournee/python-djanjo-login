@@ -68,7 +68,7 @@ pipeline{
       steps { 
               kubernetesDeploy(
                 configs: 'login.yaml'
-                kubeconfigId: 'mycluster
+                kubeconfigId: 'mycluster'
                 enableConfigSubstitution: true
               )               
       }  
