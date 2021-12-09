@@ -62,7 +62,17 @@ pipeline{
                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
          }
      }
-     }     
+     }
+
+      stage ('K8S Deploy') {
+      steps { 
+              kubernetesDeploy(
+                configs: 'login.yaml'
+                kubeconfigId: 'mycluster
+                enableConfigSubstitution: true
+              )               
+      }  
+      
   }
 }
 
